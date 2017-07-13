@@ -12,13 +12,6 @@ function init()
 		guardaryeditar(e);	
 	})
 
-	//cargamos los items al select categoria
-	$.post("../ajax/articulo.php?op=selectCategoria",function(r)
-	{
-		$("#idcategoria").html(r);
-		$('#idcategoria').selectpicker('refresh');
-	});
-
 	$("#imagenmuestra").hide();
 
 }
@@ -26,15 +19,18 @@ function init()
 function limpiar()
 {
 	//Al objeto del formulario cuyo nombre es el siguiente, se le asigna un valor en blanco
-	$("#idarticulo").val("");
-	$("#codigo").val("");
-	$("#nombre").val("");
-	$("#stock").val("");
-	$("#descripcion").val("");
-	$("#imagen").val("");
-	$("#imagenmuestra").attr("src","");
-	$("#imagenactual").val("");
-	$("#print").hide();
+	$("idusuario").val("");
+	$("nombre").val("");
+	$("tipo_documento").val("");
+	$("num_documento").val("");
+	$("direccion").val("");
+	$("telefono").val("");
+	$("email").val("");
+	$("cargo").val("");
+	$("login").val("");
+	$("clave").val("");
+	$("imagenmuestra").attr("src","");
+	$("imagenactual").val("");
 } 
 
 //Función mostrar formulario, recibe valores en la variable llamada flag
@@ -80,7 +76,7 @@ function listar()
 				],
 		"ajax":
 				{
-					url: '../ajax/articulo.php?op=listar',
+					url: '../ajax/usuario.php?op=listar',
 					type: "get",
 					dataType: "json",
 					error: function(e)
@@ -107,7 +103,7 @@ function guardaryeditar(e)
 	//alert($("#formulario")[0][0]);
 
 	$.ajax({
-		url:"../ajax/articulo.php?op=guardaryeditar",
+		url:"../ajax/usuario.php?op=guardaryeditar",
 		type: "POST",
 		data: formData,
 		contentType: false,
@@ -130,33 +126,36 @@ function guardaryeditar(e)
 
 }
 
-function mostrar(vidarticulo)
+function mostrar(vidusuario)
 {
-	$.post("../ajax/articulo.php?op=mostrar",{idarticulo : vidarticulo},function(data,status)
+	$.post("../ajax/usuario.php?op=mostrar",{idusuario : vidusuario},function(data,status)
 	{
 		data = JSON.parse(data);
 		mostrarform(true);
 
-		$("#idarticulo").val(data.idarticulo);
-		$('#idcategoria').val(data.idcategoria);
-		$('#idcategoria').selectpicker('refresh');
-		$("#codigo").val(data.codigo);
+		$("#idusuario").val(data.idusuario);
 		$("#nombre").val(data.nombre);
-		$("#stock").val(data.stock);
-		$("#descripcion").val(data.descripcion);
+		$("#tipo_documento").val(data.tipo_documento);
+		$("#tipo_documento").selectpicker('refresh');
+		$("#num_documento").val(data.num_documento);
+		$("#direccion").val(data.direccion);
+		$("#telefono").val(data.telefono);
+		$("#email").val(data.email);
+		$("#cargo").val(data.cargo);
+		$("#login").val(data.login);
+		$("#clave").val(data.clave);
 		$("#imagenmuestra").show();
-		$("#imagenmuestra").attr("src","../files/articulos/" +data.imagen);
+		$("#imagenmuestra").attr("src","../files/usuarios/"+data.imagen);
 		$("#imagenactual").val(data.imagen);
-		generarbarcode();
-		
+	
 	})
 }
 
-function desactivar(vidarticulo)
+function desactivar(vidusuario)
 {
 	swal({
-		  title: 'Desactivar Artículo',
-		  text: "Está seguro de que desea desactivar el artículo?",
+		  title: 'Desactivar Usuario',
+		  text: "Está seguro de que desea desactivar el usuario?",
 		  type: 'warning',
 		  showCancelButton: true,
 		  confirmButtonColor: '#3085d6',
@@ -164,7 +163,7 @@ function desactivar(vidarticulo)
 		  confirmButtonText: 'Si, desactivar',
 		  cancelButtonText: 'Cancelar'
 		}).then(function () {
-			$.post("../ajax/articulo.php?op=desactivar",{idarticulo : vidarticulo},function(e)
+			$.post("../ajax/usuario.php?op=desactivar",{idusuario : vidusuario},function(e)
 			{	
 				swal('Listo',e,'success');
 			  	tabla.api().ajax.reload();
@@ -172,11 +171,11 @@ function desactivar(vidarticulo)
 		}).catch(swal.noop)
 }
 
-function activar(vidarticulo)
+function activar(vidusuario)
 {
 	swal({
-		  title: 'Activar Artículo',
-		  text: "Está seguro de que desea activar el artículo?",
+		  title: 'Activar Usuario',
+		  text: "Está seguro de que desea activar el usuario?",
 		  type: 'warning',
 		  showCancelButton: true,
 		  confirmButtonColor: '#3085d6',
@@ -184,24 +183,12 @@ function activar(vidarticulo)
 		  confirmButtonText: 'Si, activar',
 		  cancelButtonText: 'Cancelar'
 		}).then(function () {
-			$.post("../ajax/articulo.php?op=activar",{idarticulo : vidarticulo},function(e)
+			$.post("../ajax/usuario.php?op=activar",{idusuario : vidusuario},function(e)
 			{	
 				swal('Listo',e,'success');
 			  	tabla.api().ajax.reload();
 			})
 		}).catch(swal.noop)
-}
-
-function generarbarcode()
-{
-	codigo=$("#codigo").val();
-	JsBarcode("#barcode",codigo);
-	$("#print").show();
-}
-
-function imprimir()
-{
-	$("#print").printArea();
 }
 
 init();

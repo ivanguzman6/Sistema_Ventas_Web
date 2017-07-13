@@ -10,7 +10,7 @@ require 'header.php';
               <div class="col-md-12">
                   <div class="box">
                     <div class="box-header with-border">
-                          <h1 class="box-title">Artículo <button class="btn btn-success" id="btnagregar" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i> Agregar</button></h1>
+                          <h1 class="box-title">Usuario <button class="btn btn-success" id="btnagregar" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i> Agregar</button></h1>
                         <div class="box-tools pull-right">
                         </div>
                     </div>
@@ -21,12 +21,13 @@ require 'header.php';
                           <thead>
                             <th>Opciones</th>
                             <th>ID</th>
-                            <th>Categoría</th>
-                            <th>Código</th>
                             <th>Nombre</th>
-                            <th>Stock</th>
-                            <th>Descripción</th>
-                            <th>Imagen</th>
+                            <th>Documento</th>
+                            <th>Número Documento</th>
+                            <th>Teléfono</th>
+                            <th>Email</th>
+                            <th>Login</th>
+                            <th>Foto</th>
                             <th>Estado</th>
                           </thead>
                           <tbody>                            
@@ -34,12 +35,13 @@ require 'header.php';
                           <tfoot>
                             <th>Opciones</th>
                             <th>ID</th>
-                            <th>Categoría</th>
-                            <th>Código</th>
                             <th>Nombre</th>
-                            <th>Stock</th>
-                            <th>Descripción</th>
-                            <th>Imagen</th>
+                            <th>Documento</th>
+                            <th>Número Documento</th>
+                            <th>Teléfono</th>
+                            <th>Email</th>
+                            <th>Login</th>
+                            <th>Foto</th>
                             <th>Estado</th>
                           </tfoot>
                         </table>
@@ -48,19 +50,43 @@ require 'header.php';
                         <form name="formulario" id="formulario" method="post">
                           <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <label>Nombre(*):</label>
+                            <input type="hidden" name="idusuario" id="idusuario">
                             <input type="text" class="form-control" name="nombre" id="nombre" maxlength="100" placeholder="Nombre" required>
                           </div>
                           <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <label>Categoría(*):</label>
-                            <select id="idcategoria" name="idcategoria" class="form-control selectpicker" data-live-search="true" required></select>
+                            <label>Tipo Documento(*):</label>
+                            <select class="form-control select-picker" name="tipo_documento" id="tipo_documento" required>
+                              <option value="RNC">RNC</option>                                
+                              <option value="CEDULA">CEDULA</option>                                
+                            </select>
                           </div>
                           <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <label>Stock:</label>
-                            <input type="number" class="form-control" name="stock" id="stock" required>
+                            <label>Número Documento(*):</label>
+                            <input type="text" class="form-control" name="num_documento" id="num_documento" maxlength="20" placeholder="Número de Documento" required>
                           </div>
                           <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <label>Descripcion:</label>
-                            <input type="text" class="form-control" name="descripcion" id="descripcion" maxlength="256" placeholder="Descripción">
+                            <label>Dirección:</label>
+                            <input type="text" class="form-control" name="direccion" id="direccion" maxlength="70" placeholder="Dirección del Usuario">
+                          </div>
+                          <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <label>Teléfono:</label>
+                            <input type="text" class="form-control" name="telefono" id="telefono" maxlength="20" placeholder="Teléfono">
+                          </div>
+                          <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <label>Email:</label>
+                            <input type="text" class="form-control" name="email" id="email" maxlength="50" placeholder="Email">
+                          </div>
+                          <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <label>Cargo:</label>
+                            <input type="text" class="form-control" name="cargo" id="cargo" maxlength="20" placeholder="Cargo">
+                          </div>
+                          <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <label>Login(*):</label>
+                            <input type="text" class="form-control" name="login" id="login" maxlength="20" placeholder="Login" required>
+                          </div>
+                          <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <label>Clave(*):</label>
+                            <input type="password" class="form-control" name="clave" id="clave" maxlength="64" placeholder="Clave" required>
                           </div>
                           <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <label>Imagen:</label>
@@ -68,17 +94,6 @@ require 'header.php';
                             <input type="hidden" name="imagenactual" id="imagenactual">
                             <img src="" width="150px" height="120px" id="imagenmuestra">
                           </div>
-                          <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <label>Código:</label>
-                            <input type="hidden" name="idarticulo" id="idarticulo">
-                            <input type="text" class="form-control" name="codigo" id="codigo" maxlength="50" placeholder="Código Barras">
-                            <button class="btn btn-success" type="button" onclick="generarbarcode()">Generar</button>
-                            <button class="btn btn-info" type="button" onclick="imprimir()">Imprimir</button>
-                            <div id="print">
-                              <svg id="barcode"></svg>  
-                            </div>
-                          </div>
-
 
                           <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i> Guardar</button>
@@ -98,6 +113,4 @@ require 'header.php';
 <?php
 require 'footer.php';
 ?>
-<script type="text/javascript" src="../public/js/JsBarcode.all.min.js"></script>
-<script type="text/javascript" src="../public/js/jquery.PrintArea.js"></script>
-<script type="text/javascript" src="scripts/articulo.js"></script>
+<script type="text/javascript" src="scripts/usuario.js"></script>

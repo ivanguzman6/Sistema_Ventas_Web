@@ -11,30 +11,18 @@ function init()
 	{
 		guardaryeditar(e);	
 	})
-
-	//cargamos los items al select categoria
-	$.post("../ajax/articulo.php?op=selectCategoria",function(r)
-	{
-		$("#idcategoria").html(r);
-		$('#idcategoria').selectpicker('refresh');
-	});
-
-	$("#imagenmuestra").hide();
-
 }
 //Funcion limpiar
 function limpiar()
 {
-	//Al objeto del formulario cuyo nombre es el siguiente, se le asigna un valor en blanco
-	$("#idarticulo").val("");
-	$("#codigo").val("");
+
+	$("#idpersona").val("");
 	$("#nombre").val("");
-	$("#stock").val("");
-	$("#descripcion").val("");
-	$("#imagen").val("");
-	$("#imagenmuestra").attr("src","");
-	$("#imagenactual").val("");
-	$("#print").hide();
+	$("#tipo_documento").val("");
+	$("#num_documento").val("");
+	$("#direccion").val("");
+	$("#telefono").val("");
+	$("#email").val("");
 } 
 
 //Función mostrar formulario, recibe valores en la variable llamada flag
@@ -47,13 +35,13 @@ function mostrarform(flag)
 		$("#listadoregistros").hide();
 		$("#formularioregistros").show();
 		$("#btnGuardar").prop("disabled",false);
-		$("#btnagregar").hide();	
+		$("#btnagregar").hide();
 	}
 	else
 	{
 		$("#listadoregistros").show();
 		$("#formularioregistros").hide();
-		$("#btnagregar").show();	
+		$("#btnagregar").show();
 	}
 }
 
@@ -80,7 +68,7 @@ function listar()
 				],
 		"ajax":
 				{
-					url: '../ajax/articulo.php?op=listar',
+					url: '../ajax/persona.php?op=listarp',
 					type: "get",
 					dataType: "json",
 					error: function(e)
@@ -107,7 +95,7 @@ function guardaryeditar(e)
 	//alert($("#formulario")[0][0]);
 
 	$.ajax({
-		url:"../ajax/articulo.php?op=guardaryeditar",
+		url:"../ajax/persona.php?op=guardaryeditar",
 		type: "POST",
 		data: formData,
 		contentType: false,
@@ -130,41 +118,39 @@ function guardaryeditar(e)
 
 }
 
-function mostrar(vidarticulo)
+function mostrar(vidpersona)
 {
-	$.post("../ajax/articulo.php?op=mostrar",{idarticulo : vidarticulo},function(data,status)
+	$.post("../ajax/persona.php?op=mostrar",{idpersona : vidpersona},function(data,status)
 	{
-		data = JSON.parse(data);
-		mostrarform(true);
+		data = JSON.parse(data);        
+        mostrarform(true);
+ 
+        $("#nombre").val(data.nombre);
+        $("#tipo_documento").val(data.tipo_documento);
+        $("#tipo_documento").selectpicker('refresh');
+        $("#num_documento").val(data.num_documento);
+        $("#direccion").val(data.direccion);
+        $("#telefono").val(data.telefono);
+        $("#email").val(data.email);
+        $("#idpersona").val(data.idpersona);
 
-		$("#idarticulo").val(data.idarticulo);
-		$('#idcategoria').val(data.idcategoria);
-		$('#idcategoria').selectpicker('refresh');
-		$("#codigo").val(data.codigo);
-		$("#nombre").val(data.nombre);
-		$("#stock").val(data.stock);
-		$("#descripcion").val(data.descripcion);
-		$("#imagenmuestra").show();
-		$("#imagenmuestra").attr("src","../files/articulos/" +data.imagen);
-		$("#imagenactual").val(data.imagen);
-		generarbarcode();
-		
+	
 	})
 }
 
-function desactivar(vidarticulo)
+function eliminar(vidpersona)
 {
 	swal({
-		  title: 'Desactivar Artículo',
-		  text: "Está seguro de que desea desactivar el artículo?",
+		  title: 'Eliminar Proveedor',
+		  text: "Está seguro de que desea eliminar el proveedor?",
 		  type: 'warning',
 		  showCancelButton: true,
 		  confirmButtonColor: '#3085d6',
 		  cancelButtonColor: '#d33',
-		  confirmButtonText: 'Si, desactivar',
+		  confirmButtonText: 'Si, elaminar',
 		  cancelButtonText: 'Cancelar'
 		}).then(function () {
-			$.post("../ajax/articulo.php?op=desactivar",{idarticulo : vidarticulo},function(e)
+			$.post("../ajax/persona.php?op=eliminar",{idpersona : vidpersona},function(e)
 			{	
 				swal('Listo',e,'success');
 			  	tabla.api().ajax.reload();
@@ -172,36 +158,5 @@ function desactivar(vidarticulo)
 		}).catch(swal.noop)
 }
 
-function activar(vidarticulo)
-{
-	swal({
-		  title: 'Activar Artículo',
-		  text: "Está seguro de que desea activar el artículo?",
-		  type: 'warning',
-		  showCancelButton: true,
-		  confirmButtonColor: '#3085d6',
-		  cancelButtonColor: '#d33',
-		  confirmButtonText: 'Si, activar',
-		  cancelButtonText: 'Cancelar'
-		}).then(function () {
-			$.post("../ajax/articulo.php?op=activar",{idarticulo : vidarticulo},function(e)
-			{	
-				swal('Listo',e,'success');
-			  	tabla.api().ajax.reload();
-			})
-		}).catch(swal.noop)
-}
-
-function generarbarcode()
-{
-	codigo=$("#codigo").val();
-	JsBarcode("#barcode",codigo);
-	$("#print").show();
-}
-
-function imprimir()
-{
-	$("#print").printArea();
-}
 
 init();

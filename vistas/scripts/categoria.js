@@ -32,11 +32,13 @@ function mostrarform(flag)
 		$("#listadoregistros").hide();
 		$("#formularioregistros").show();
 		$("#btnGuardar").prop("disabled",false);
+		$("#btnagregar").hide();
 	}
 	else
 	{
 		$("#listadoregistros").show();
 		$("#formularioregistros").hide();
+		$("#btnagregar").show();
 	}
 }
 
@@ -74,6 +76,7 @@ function listar()
 				},
 		"bDestroy":true,
 		"iDisplayLenght": 5, //Paginación
+		"aLengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
 		"order": [[0,"desc"]] //ordar por la primera columna, descendente		
 	})
 }
