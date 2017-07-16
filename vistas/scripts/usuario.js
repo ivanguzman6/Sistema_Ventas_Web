@@ -14,23 +14,30 @@ function init()
 
 	$("#imagenmuestra").hide();
 
+	//mostramos los permisos
+	$.post("../ajax/usuario.php?op=permisos&id=",function(r)
+	{
+		$("#permisos").html(r);
+	});
+
+
 }
 //Funcion limpiar
 function limpiar()
 {
 	//Al objeto del formulario cuyo nombre es el siguiente, se le asigna un valor en blanco
-	$("idusuario").val("");
-	$("nombre").val("");
-	$("tipo_documento").val("");
-	$("num_documento").val("");
-	$("direccion").val("");
-	$("telefono").val("");
-	$("email").val("");
-	$("cargo").val("");
-	$("login").val("");
-	$("clave").val("");
-	$("imagenmuestra").attr("src","");
-	$("imagenactual").val("");
+	$("#idusuario").val("");
+	$("#nombre").val("");
+	$("#tipo_documento").val("");
+	$("#num_documento").val("");
+	$("#direccion").val("");
+	$("#telefono").val("");
+	$("#email").val("");
+	$("#cargo").val("");
+	$("#login").val("");
+	$("#clave").val("");
+	$("#imagenmuestra").attr("src","");
+	$("#imagenactual").val("");
 } 
 
 //Función mostrar formulario, recibe valores en la variable llamada flag
@@ -147,8 +154,12 @@ function mostrar(vidusuario)
 		$("#imagenmuestra").show();
 		$("#imagenmuestra").attr("src","../files/usuarios/"+data.imagen);
 		$("#imagenactual").val(data.imagen);
-	
-	})
+	});
+
+	$.post("../ajax/usuario.php?op=permisos&id="+vidusuario,function(r)
+	{
+		$("#permisos").html(r);
+	});
 }
 
 function desactivar(vidusuario)

@@ -38,12 +38,12 @@ switch ($_GET["op"]){
 		$clavehash=hash("SHA256",$clave);
 
 		if (empty($idusuario)){
-			$rspta=$usuario->insertar($nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clavehash,$imagen);
-			echo $rspta ? "Usuario registrado" : "Usuario no se pudo registrar";
+			$rspta=$usuario->insertar($nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clavehash,$imagen,$_POST["permiso"]);
+			echo $rspta ? "Usuario registrado" : "Usuario no se pudo registrar los datos del usuario";
 		}
 		else {
-			$rspta=$usuario->editar($idusuario,$nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clavehash,$imagen);
-			echo $rspta ? "Usuario actualizado" : "Usuario no se pudo actualizar";
+			$rspta=$usuario->editar($idusuario,$nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clavehash,$imagen,$_POST["permiso"]);
+			echo $rspta ? "Usuario actualizado" : "Usuario no se pudo actualizar los datos del usuario";
 		}
 	break;
 
@@ -96,6 +96,35 @@ switch ($_GET["op"]){
  			"aaData"=>$data);
  		echo json_encode($results);
 
+	break;
+
+	case 'permisos':
+		//Obtenemos todos los permisos de la trabla de permisos
+		require_once "../modelos/Permiso.php";
+		$permiso = new Permiso();
+		$rspta = $permiso->listar();
+
+		//obtener los permisos marcados del usuario
+		$id=$_GET['id'];
+		$marcados=$usuario->listarmarcados($id);
+		$valores=array();
+
+
+		//Almacenar los permisos almacenados al usuario en el array
+		while($per=$marcados->fetch_object())
+		{
+			//Almacenando los permisos en el array de valores
+			array_push($valores, $per->idpermiso);
+		}	 
+
+		//Mostramos la lista de permisos en la vista y si esta marcados o no
+		while ($reg=$rspta->fetch_object())
+ 		{
+ 			//Esta variable tendra asignado un string dependiendo si el idpermiso esta o no dentro del array de permisos del usuario
+ 			$vchequed=in_array($reg->idpermiso,$valores)?'checked':'';
+
+ 			echo '<li> <input type="checkbox" '.$vchequed.' name="permiso[]" value="'.$reg->idpermiso.'">'.$reg->nombre.'</li>';
+		}
 	break;
 
 }
