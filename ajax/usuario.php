@@ -1,4 +1,5 @@
 <?php 
+session_start();
 require_once "../modelos/Usuario.php";
 
 $usuario=new Usuario();
@@ -15,8 +16,9 @@ $login=isset($_POST["login"])? limpiarCadena($_POST["login"]):"";
 $clave=isset($_POST["clave"])? limpiarCadena($_POST["clave"]):"";
 $imagen=isset($_POST["imagen"])? limpiarCadena($_POST["imagen"]):"";
 
+$operacion=$_GET["op"];
 
-switch ($_GET["op"]){
+switch ($operacion){
 	case 'guardaryeditar':
 		if (!file_exists($_FILES['imagen']['tmp_name']) || !is_uploaded_file($_FILES['imagen']['tmp_name']))
 		{
@@ -125,6 +127,57 @@ switch ($_GET["op"]){
 
  			echo '<li> <input type="checkbox" '.$vchequed.' name="permiso[]" value="'.$reg->idpermiso.'">'.$reg->nombre.'</li>';
 		}
+	break;
+
+	case 'verificar':
+		$login_acceso = $_POST['login_acceso'];
+		$clave_acceso = $_POST['clave_acceso'];
+		$clavehash=hash("SHA256",$clave_acceso);
+
+		$rspta=$usuario->verificar($login_acceso,$clavehash);
+		$fetch=$rspta->fetch_object();
+
+		//si existe el objeto reg
+		if(isset($fetch))
+		{
+			$_SESSION['idusuario']=$fetch->idusuario;
+			$_SESSION['nombre']=$fetch->nombre;
+			$_SESSION['imagen']=$fetch->imagen;
+			$_SESSION['login']=$fetch->login;
+
+			//Obtenemos los permisos marcados para este usuario
+			$marcados = $usuario->listarmarcados($fetch->idusuario);
+
+			//Declaramos un array para almacenar todos los permisos marcados
+			$valores=array();
+
+			//Guardando permisos en el array
+			while ($permiso=$marcados->fetch_object())
+	 		{
+	 			array_push($valores, $permiso->idpermiso);
+			}
+
+			//Determinamos los accesos del usuario
+			in_array(1,$valores)?$_SESSION['escritorio']=1:$_SESSION['escritorio']=0;
+			in_array(2,$valores)?$_SESSION['almacen']=1:$_SESSION['almacen']=0;
+			in_array(3,$valores)?$_SESSION['compras']=1:$_SESSION['compras']=0;
+			in_array(4,$valores)?$_SESSION['ventas']=1:$_SESSION['ventas']=0;
+			in_array(5,$valores)?$_SESSION['acceso']=1:$_SESSION['acceso']=0;
+			in_array(6,$valores)?$_SESSION['consultac']=1:$_SESSION['consultac']=0;
+			in_array(7,$valores)?$_SESSION['consultav']=1:$_SESSION['consultav']=0;
+
+		}
+		echo json_encode($fetch);
+	break;
+
+	case 'salir':
+		//Limpiamos las variables de sesion
+		session_unset();
+		//Destruimos la sesion
+		session_destroy();
+		//Redireccionamos al Login
+		header("Location: ../index.php");
+
 	break;
 
 }
