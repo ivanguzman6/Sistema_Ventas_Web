@@ -59,6 +59,27 @@ Class Articulo
 			 "INNER JOIN categoria c on a.idcategoria = c.idcategoria ";
 		return ejecutarConsulta($sql); 
 	}
+
+	//Implementar un metod para listar los registros activos
+	public function listarActivos()
+	{
+		$sql="SELECT a.idarticulo,c.idcategoria,c.nombre as categoria,a.codigo,a.nombre,a.stock,a.descripcion,a.imagen,a.condicion " .
+			 "FROM articulo a " .
+			 "INNER JOIN categoria c on a.idcategoria = c.idcategoria ".
+			 "WHERE a.condicion=1";
+		return ejecutarConsulta($sql); 
+	}
+
+	//Implementar un metod para listar los registros activos, su ultimo precio y el stock (vamos a unir el ultimo registro de la tabla detalle_ingreso)
+	public function listarActivosVentas()
+	{
+		$sql="SELECT a.idarticulo,c.idcategoria,c.nombre as categoria,a.codigo,a.nombre,a.stock,(SELECT precio_venta FROM detalle_ingreso WHERE idarticulo=a.idarticulo order by iddetalle_ingreso desc limit 0,1) as precio_venta,a.descripcion,a.imagen,a.condicion " .
+			 "FROM articulo a " .
+			 "INNER JOIN categoria c on a.idcategoria = c.idcategoria ".
+			 "WHERE a.condicion='1'";
+		return ejecutarConsulta($sql); 
+	}
+
 }
 
 ?>

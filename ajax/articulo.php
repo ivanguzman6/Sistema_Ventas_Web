@@ -38,26 +38,23 @@ switch ($_GET["op"]){
 			$rspta=$articulo->editar($idarticulo,$idcategoria,$codigo,$nombre,$stock,$descripcion,$imagen);
 			echo $rspta ? "Articulo actualizado" : "Articulo no se pudo actualizar";
 		}
-	break;
+		break;
 
 	case 'desactivar':
 		$rspta=$articulo->desactivar($idarticulo);
  		echo $rspta ? "Articulo Desactivado" : "Articulo no se puede desactivar";
- 		break;
-	break;
+		break;
 
 	case 'activar':
 		$rspta=$articulo->activar($idarticulo);
  		echo $rspta ? "Articulo activado" : "Articulo no se puede activar";
- 		break;
-	break;
+		break;
 
 	case 'mostrar':
 		$rspta=$articulo->mostrar($idarticulo);
  		//Codificar el resultado utilizando json
  		echo json_encode($rspta);
- 		break;
-	break;
+		break;
 
 	case 'listar':
 		$rspta=$articulo->listar();
@@ -88,7 +85,7 @@ switch ($_GET["op"]){
  			"aaData"=>$data);
  		echo json_encode($results);
 
-	break;
+		break;
 
 	case 'selectCategoria':
 		require_once "../modelos/Categoria.php";
@@ -101,6 +98,6 @@ switch ($_GET["op"]){
 			echo '<option value=' . $reg->idcategoria . '>' .  $reg->nombre . '</option>';	
 		}
 
-	break;
+		break;
 }
 ?>

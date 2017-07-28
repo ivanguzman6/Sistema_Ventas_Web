@@ -24,20 +24,18 @@ switch ($_GET["op"]){
 			$rspta=$persona->editar($idpersona,$tipo_persona,$nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email);
 			echo $rspta ? "Persona actualizada" : "Persona no se pudo actualizar";
 		}
-	break;
+		break;
 
 	case 'eliminar':
 		$rspta=$persona->eliminar($idpersona);
  		echo $rspta ? "Persona Eliminada" : "Persona no se puede desactivar";
  		break;
-	break;
 
 	case 'mostrar':
 		$rspta=$persona->mostrar($idpersona);
         //Codificar el resultado utilizando json
         echo json_encode($rspta);
  		break;
-	break;
 
 	case 'listarp':
 		$rspta=$persona->listarp();
@@ -64,7 +62,7 @@ switch ($_GET["op"]){
 
         echo json_encode($results);
  					
-	break;
+		break;
 
 	case 'listarc':
 		$rspta=$persona->listarc();
@@ -92,7 +90,7 @@ switch ($_GET["op"]){
  			"aaData"=>$data);
  		echo json_encode($results);
 
-	break;
+		break;
 
 }
 ?>

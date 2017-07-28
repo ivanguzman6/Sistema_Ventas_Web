@@ -30,7 +30,7 @@ Class Persona
 	}
 
 	//Implementamos un metodo para elimiar registros
-	public function elminar($idpersona)
+	public function eliminar($idpersona)
 	{
 		$sql="DELETE from persona WHERE idpersona='$idpersona'";
 

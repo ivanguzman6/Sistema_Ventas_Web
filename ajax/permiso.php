@@ -22,7 +22,7 @@ switch ($_GET["op"]){
  			"aaData"=>$data);
  		echo json_encode($results);
 
-	break;
+		break;
 
 }
 ?>

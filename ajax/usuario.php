@@ -47,26 +47,23 @@ switch ($operacion){
 			$rspta=$usuario->editar($idusuario,$nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clavehash,$imagen,$_POST["permiso"]);
 			echo $rspta ? "Usuario actualizado" : "Usuario no se pudo actualizar los datos del usuario";
 		}
-	break;
+		break;
 
 	case 'desactivar':
 		$rspta=$usuario->desactivar($idusuario);
  		echo $rspta ? "Usuario Desactivado" : "Usuario no se puede desactivar";
  		break;
-	break;
 
 	case 'activar':
 		$rspta=$usuario->activar($idusuario);
  		echo $rspta ? "Usuario activado" : "Usuario no se puede activar";
  		break;
-	break;
 
 	case 'mostrar':
 		$rspta=$usuario->mostrar($idusuario);
  		//Codificar el resultado utilizando json
  		echo json_encode($rspta);
  		break;
-	break;
 
 	case 'listar':
 		$rspta=$usuario->listar();
@@ -98,7 +95,7 @@ switch ($operacion){
  			"aaData"=>$data);
  		echo json_encode($results);
 
-	break;
+		break;
 
 	case 'permisos':
 		//Obtenemos todos los permisos de la trabla de permisos
@@ -127,7 +124,7 @@ switch ($operacion){
 
  			echo '<li> <input type="checkbox" '.$vchequed.' name="permiso[]" value="'.$reg->idpermiso.'">'.$reg->nombre.'</li>';
 		}
-	break;
+		break;
 
 	case 'verificar':
 		$login_acceso = $_POST['login_acceso'];
@@ -168,7 +165,7 @@ switch ($operacion){
 
 		}
 		echo json_encode($fetch);
-	break;
+		break;
 
 	case 'salir':
 		//Limpiamos las variables de sesion
@@ -178,7 +175,7 @@ switch ($operacion){
 		//Redireccionamos al Login
 		header("Location: ../index.php");
 
-	break;
+		break;
 
 }
 ?>

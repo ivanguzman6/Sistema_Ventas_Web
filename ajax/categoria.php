@@ -17,26 +17,23 @@ switch ($_GET["op"]){
 			$rspta=$categoria->editar($idcategoria,$nombre,$descripcion);
 			echo $rspta ? "Categoria actualizada" : "Categoria no se pudo actualizar";
 		}
-	break;
+		break;
 
 	case 'desactivar':
 		$rspta=$categoria->desactivar($idcategoria);
  		echo $rspta ? "Categoría Desactivada" : "Categoría no se puede desactivar";
  		break;
-	break;
 
 	case 'activar':
 		$rspta=$categoria->activar($idcategoria);
  		echo $rspta ? "Categoría activada" : "Categoría no se puede activar";
  		break;
-	break;
 
 	case 'mostrar':
 		$rspta=$categoria->mostrar($idcategoria);
  		//Codificar el resultado utilizando json
  		echo json_encode($rspta);
  		break;
-	break;
 
 	case 'listar':
 		$rspta=$categoria->listar();
@@ -63,7 +60,7 @@ switch ($_GET["op"]){
  			"aaData"=>$data);
  		echo json_encode($results);
 
-	break;
+		break;
 
 }
 ?>
