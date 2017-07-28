@@ -18,6 +18,12 @@ Class Consultas
 		return ejecutarConsulta($sql); 
 	}
 
+    //Implementar un metod para listar los registros
+    public function ventasfechacliente($fecha_desde,$fecha_hasta,$idcliente)
+    {
+        $sql="SELECT DATE(v.fecha_hora) as fecha, u.nombre as usuario,p.nombre as cliente, v.tipo_comprobante,v.serie_comprobante, v.num_comprobante, v.total_venta, v.impuesto,v.estado FROM venta v INNER JOIN persona p on v.idcliente=p.idpersona INNER JOIN usuario u on v.idusuario=u.idusuario WHERE date(v.fecha_hora)>='$fecha_desde' and DATE(v.fecha_hora)<='$fecha_hasta' and v.idcliente='$idcliente'";
+        return ejecutarConsulta($sql);
+    }
 
 }
 
