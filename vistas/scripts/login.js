@@ -9,7 +9,7 @@ $("#frmAcceso").on('submit',function(e)
 			if(data!="null")
 			{
 				//Redireccionar a este archivo
-				$(location).attr("href","categoria.php");
+				$(location).attr("href","escritorio.php");
 			}
 			else
 			{
